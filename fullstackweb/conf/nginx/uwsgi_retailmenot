@@ -1,0 +1,31 @@
+upstream retailmenot_uwsgi {
+	#ip_hash;
+        server 127.0.0.1:40001;
+}
+server {
+ 
+        listen                  80;
+        server_name             productviewer.retailmenot.com;
+        root                    /web/www/retailmenot/;
+        access_log              /web/logs/retailmenot_access.log;
+        error_log 		/web/logs/retailmenot_error.log;
+ 
+        location /media/ {
+                alias /sites/mysite/media/;
+        }
+        
+        location /static/ {
+                alias /sites/mysite/static/;
+        }
+ 
+        location / {
+                include         uwsgi_params;
+                #proxy_pass	http://retailmenot_uwsgi;
+                uwsgi_pass      retailmenot_uwsgi;
+                uwsgi_param	Host $http_host;
+                uwsgi_param	X-Forwarded-For $remote_addr;
+                #uwsgi_param     UWSGI_PYHOME $document_root;
+                #uwsgi_param     UWSGI_CHDIR $document_root/retailmenot;
+                #uwsgi_param     UWSGI_SCRIPT confs.django_wsgi;
+        }
+}

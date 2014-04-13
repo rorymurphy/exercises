@@ -6,34 +6,41 @@
 #also, in our case, node will get installed from the canonical repository,
 #whereas the script was using a distro someone forked.
 
+#need a reference to the path where the script is located, since conf and data resources are relative to this
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo $DIR
+#since this is going into a docker container, this shouldn't be necessary - was being used to expedite local testing
+rm -rf /opt/statsd/
+rm -rf /opt/graphite/
+rm -rf /usr/local/lib/graphite
+
 # node.js using PPA (for statsd)
-sudo apt-get install python-software-properties
- 
 # System level dependencies for Graphite
-sudo apt-get install memcached python-dev python-pip sqlite3 libcairo2 \
+apt-get -y install python-software-properties memcached python-dev python-pip sqlite3 libcairo2 \
 libcairo2-dev python-cairo pkg-config
- 
-# Get latest pip
-sudo pip install --upgrade pip
- 
+
+mkdir -p /usr/local/lib
+virtualenv /usr/local/lib/graphite
+source /usr/local/lib/graphite/bin/activate
+
 # Install carbon and graphite deps
 cat >> /tmp/graphite_reqs.txt << EOF
-django==1.6
+django==1.4.2
 python-memcached
 django-tagging
-twisted
+twisted<12.0
 whisper==0.9.10
 carbon==0.9.10
 graphite-web==0.9.10
 EOF
  
-sudo pip install -r /tmp/graphite_reqs.txt
+pip install -r /tmp/graphite_reqs.txt
  
 #
 # Configure carbon
 #
 cd /opt/graphite/conf/
-sudo cp carbon.conf.example carbon.conf
+cp carbon.conf.example carbon.conf
  
 # Create storage schema and copy it over
 # Using the sample as provided in the statsd README
@@ -52,18 +59,18 @@ pattern = ^stats\..*
 retentions = 10s:6h,1m:7d,10m:1y
 EOF
  
-sudo cp /tmp/storage-schemas.conf storage-schemas.conf
+cp /tmp/storage-schemas.conf storage-schemas.conf
  
 # Make sure log dir exists for webapp
-sudo mkdir -p /opt/graphite/storage/log/webapp
+mkdir -p /opt/graphite/storage/log/webapp
  
 # Copy over the local settings file and initialize database
-cd /opt/graphite/webapp/graphite/
-sudo cp local_settings.py.example local_settings.py
-sudo python manage.py syncdb # Follow the prompts, creating a superuser is optional
+cp $DIR/../conf/graphite/local_settings.py /opt/graphite/webapp/graphite/local_settings.py
+cp $DIR/../data/graphite.db /opt/graphite/storage/graphite.db
  
 # statsd
-cd /opt && sudo git clone git://github.com/etsy/statsd.git
+cd /opt && git clone git://github.com/etsy/statsd.git
+cd /opt/statsd && git checkout v0.7.1
  
 # StatsD configuration
 cat >> /tmp/localConfig.js << EOF
@@ -74,4 +81,6 @@ graphitePort: 2003
 }
 EOF
  
-sudo cp /tmp/localConfig.js /opt/statsd/localConfig.js
+cp /tmp/localConfig.js /opt/statsd/localConfig.js
+rm /tmp/graphite_reqs.txt
+rm /tmp/localConfig.js

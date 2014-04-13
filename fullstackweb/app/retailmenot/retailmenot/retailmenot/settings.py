@@ -98,7 +98,11 @@ HAYSTACK_CONNECTIONS = {
 }
 
 #Statsd configuration
-STATSD_CLIENT = 'django_statsd.clients.null'
+STATSD_CLIENT = 'django_statsd.clients.normal'
+MIDDLEWARE_CLASSES = (
+        'django_statsd.middleware.GraphiteRequestTimingMiddleware',
+        'django_statsd.middleware.GraphiteMiddleware',
+        ) + MIDDLEWARE_CLASSES
 
 #Django REST Framework configuration
 REST_FRAMEWORK = {

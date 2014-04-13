@@ -1,0 +1,13 @@
+apt-get update
+apt-get upgrade openssl
+apt-get -y install gcc python-dev python-pip python-virtualenv nginx uwsgi curl nodejs
+pip install virtualenv
+
+dpkg -i /host/elasticsearch-1.1.0.deb
+npm cache clean -f
+npm install -g n
+n stable
+
+mkdir -p /web/www
+mkdir /web/logs
+mkdir /web/conf

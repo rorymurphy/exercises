@@ -23,7 +23,7 @@
 					<div class="image-wrapper">
 						<img src="{{ prod.image_urls }}" />
 					</div>
-					<a href="{% url 'detail' prod.id %}">{{ prod.product_title }}</a>
+					<div class="caption">{{ prod.product_title }}</a></div>
 				</div>
 			{% if forloop.counter|divisibleby:"4" %}
 			</div>

@@ -5,8 +5,15 @@ from django.http import HttpResponse, Http404
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core import serializers
 from django_statsd.clients import statsd
+from django.forms import model_to_dict
+
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import generics
 
 from product_viewer.models import Product, Image
+from product_viewer.product_serializer import ProductSerializer
 
 PAGE_SIZE = 20
 
@@ -16,18 +23,7 @@ def index(request):
     statsd.incr('response.200')
     return render(request, 'product_viewer/index.html', context)
 
-def list(request, sort_field = 'page_title', sort_dir = 'desc', page = 0):
-    page = int(page)
-    prods = Product.objects.order_by(sort_field)
-    if sort_dir == 'desc':
-        prods = prods.reverse()
-    
-    page_start = page * PAGE_SIZE
-    prods = prods[page_start : page_start + PAGE_SIZE]
-    statsd.incr('response.200')
-    return HttpResponse(serializers.serialize('json', prods),
-                        content_type="application/json")
 
-def detail(request):
-    return HttpResponse('stub')
-# Create your views here.
+class ProductList(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer

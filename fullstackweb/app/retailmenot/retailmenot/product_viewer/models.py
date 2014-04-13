@@ -26,6 +26,9 @@ class Product(models.Model):
     def __init__(self, *args, **kwargs):
         super(Product, self).__init__(*args, **kwargs)
         
+    def get_visit_status_text(self):
+        return Product.VISIT_STATUS_CHOICES[self.visit_status]
+        
 class Image(models.Model):
     '''
     classdocs

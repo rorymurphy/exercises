@@ -1,9 +1,13 @@
-{% if products %}
-	<ul>
-	{% for prod in products %}
-		<li><a href="{% url 'detail' prod.id %}">{{ prod.product_title }}</a>
-	{% endfor %}
-	</ul>
-{% else %}
-	<p>No products are available</p>
-{% endif %}
+{% extends "base.html" %}
+
+{% block content_main %}
+	{% if products %}
+		<ul>
+		{% for prod in products %}
+			<li><a href="{% url 'detail' prod.id %}">{{ prod.product_title }}</a>
+		{% endfor %}
+		</ul>
+	{% else %}
+		<p>No products are available</p>
+	{% endif %}
+{% endblock %}

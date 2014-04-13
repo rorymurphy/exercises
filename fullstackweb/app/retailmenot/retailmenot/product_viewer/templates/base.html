@@ -1,10 +1,33 @@
 <!doctype html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>{% block title %}RetailMeNot Product Viewer{% endblock %}</title>
-</head>
-<body>
-{% block content_main %}<!-- No Content -->{% endblock %}
-</body>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>{% block title %}RetailMeNot Product Viewer{% endblock %}</title>
+		{% load staticfiles %}
+		<link rel="stylesheet" type="text/css" href="{% static "product_viewer/css/style.css" %}" />
+	</head>
+	<body>
+
+		<nav class="navbar navbar-default" role="navigation">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <a class="navbar-brand" href="#"></a>
+		    </div>
+
+		    <div class="collapse navbar-collapse">
+		      <form class="navbar-form navbar-right" role="search">
+		        <div class="form-group">
+		          <input type="text" class="form-control" placeholder="Search">
+		        </div>
+		        <button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-search"></i></button>
+		      </form>
+		    </div>
+		  </div>
+		</nav>
+
+	
+		<div class="content-main">
+			{% block content_main %}<!-- No Content -->{% endblock %}
+		</div>
+	</body>
 </html>

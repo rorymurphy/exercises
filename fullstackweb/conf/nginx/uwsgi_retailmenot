@@ -15,7 +15,7 @@ server {
         }
         
         location /static/ {
-                alias /sites/mysite/static/;
+                alias /web/www/retailmenot/retailmenot/static/;
         }
  
         location / {

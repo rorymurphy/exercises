@@ -5787,8 +5787,29 @@ button.close {
   max-width: 1200px;
   margin: auto;
 }
+.navbar .navbar-form[role="search"] {
+  max-width: 400px;
+}
+.btn-search {
+  background-color: #b03233;
+  color: white;
+}
 .content-main {
   width: 100%;
   max-width: 1200px;
   margin: auto;
+}
+.grid-products .product-item {
+  text-align: center;
+  box-shadow: 5px 5px 5px #333333;
+  margin-bottom: 10px;
+  padding: 5px 0;
+  border-left: solid #eeeeee 1px;
+  border-top: solid #eeeeee 1px;
+}
+.grid-products .product-item .image-wrapper {
+  height: 300px;
+}
+.grid-products .product-item .image-wrapper img {
+  max-height: 100%;
 }

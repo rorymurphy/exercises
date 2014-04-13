@@ -1,8 +1,32 @@
 @import "bootstrap/bootstrap.less";
 @import "overrides.less";
 
+.btn-search{
+	background-color: @red;
+	color: white;
+}
+
 .content-main{
 	width: 100%;
 	max-width: 1200px;
 	margin: auto;
+}
+
+.grid-products{
+	.product-item{
+		text-align: center;
+		box-shadow: 5px 5px 5px @gray-dark;
+		margin-bottom: 10px;
+		padding: 5px 0;
+		border-left: solid @gray-lighter 1px;
+		border-top: solid @gray-lighter 1px;
+		
+		.image-wrapper{
+			height: 300px;
+			
+			img{
+				max-height: 100%;
+			}
+		}
+	}
 }

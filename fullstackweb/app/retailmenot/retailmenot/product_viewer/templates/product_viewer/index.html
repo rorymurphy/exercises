@@ -1,12 +1,37 @@
 {% extends "base.html" %}
 
+{% block navbar %}
+<div class="collapse navbar-collapse">
+  <form class="navbar-form navbar-right" role="search">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Search">
+      <span class="input-group-btn">
+      	<button type="submit" class="btn btn-search"><i class="glyphicon glyphicon-search"></i></button>
+      </span>
+    </div>
+  </form>
+</div>
+{% endblock %}
 {% block content_main %}
 	{% if products %}
-		<ul>
+		<div class="container-fluid grid-products">
 		{% for prod in products %}
-			<li><a href="{% url 'detail' prod.id %}">{{ prod.product_title }}</a>
+			{% if forloop.counter0|divisibleby:"4" %}
+			<div class="row">
+			{% endif %}
+				<div class="col-md-3 col-sm-6 col-xs-12 product-item">
+					<div class="image-wrapper">
+						<img src="{{ prod.image_urls }}" />
+					</div>
+					<a href="{% url 'detail' prod.id %}">{{ prod.product_title }}</a>
+				</div>
+			{% if forloop.counter|divisibleby:"4" %}
+			</div>
+			{% endif %}
+		{% empty %}	
+		
 		{% endfor %}
-		</ul>
+		</div>
 	{% else %}
 		<p>No products are available</p>
 	{% endif %}

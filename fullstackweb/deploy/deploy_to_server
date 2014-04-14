@@ -9,12 +9,17 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 apt-get update
 #make sure to update openssl to mitigate heartbeat vulnerability
 apt-get -y upgrade openssl
-apt-get -y install gcc python-dev python-pip python-virtualenv nginx uwsgi curl nodejs
+apt-get -y install gcc python-dev python-pip python-virtualenv python-software-properties nginx uwsgi curl nodejs
 
 #setup a virtualenv, activate it, and install all the pip plugins we'll need
 virtualenv $DIR/../app/retailmenot/ENV
 source $DIR/../app/retailmenot/ENV/bin/activate
 pip install -r $DIR/../app/retailmenot/requirements.txt
+
+#elasticsearch recommends Oracle JDK, which requires their proprietary repo
+add-apt-repository ppa:webupd8team/java
+apt-get update
+apt-get install oracle-java7-installer
 
 #elasticsearch setup
 cd /tmp

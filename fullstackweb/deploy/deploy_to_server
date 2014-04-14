@@ -60,7 +60,7 @@ ln -s $DIR/../conf/supervisor/statsd_carbon.conf /etc/supervisor/conf.d/statsd_c
 ln -s $DIR/../conf/uwsgi/uwsgi.ini /web/conf/retailmenot/uwsgi.ini
 
 #seeding elasticsearch
-souce $DIR/../app/retailmenot/ENV/bin/activate
+source $DIR/../app/retailmenot/ENV/bin/activate
 python $DIR/../app/retailmenot/retailmenot/manage.py rebuild_index
 deactivate
 

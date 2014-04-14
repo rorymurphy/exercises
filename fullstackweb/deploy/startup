@@ -2,5 +2,8 @@
 
 ls /etc/nginx/sites-enabled/default && sudo rm /etc/nginx/sites-enabled/default
 sudo service elasticsearch start
-sudo service supervisor start
 sudo service nginx start
+#sudo service supervisor start
+#instead of running supervisor as a service, I've seen some suggestions to let it be the running process
+#that keeps docker running
+/usr/bin/supervisord -c /etc/supervisor/supervisord.conf

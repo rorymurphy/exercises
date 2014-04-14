@@ -6,4 +6,4 @@ sudo service nginx start
 #sudo service supervisor start
 #instead of running supervisor as a service, I've seen some suggestions to let it be the running process
 #that keeps docker running
-/usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+/usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf

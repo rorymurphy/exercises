@@ -61,6 +61,6 @@ ln -s $DIR/../conf/uwsgi/uwsgi.ini /web/conf/retailmenot/uwsgi.ini
 
 #seeding elasticsearch
 source $DIR/../app/retailmenot/ENV/bin/activate
-python $DIR/../app/retailmenot/retailmenot/manage.py rebuild_index
+python $DIR/../app/retailmenot/retailmenot/manage.py rebuild_index --noinput
 deactivate
 

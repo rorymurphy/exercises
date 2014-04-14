@@ -1,8 +1,8 @@
 FROM    ubuntu:13.10
 
-RUN apt-get install git
+RUN apt-get -y install git
 RUN mkdir /deploy
-RUN git clone https://github.com/rorymurphy/exercises.git
+RUN cd /deploy && git clone https://github.com/rorymurphy/exercises.git
 RUN /deploy/exercises/fullstackweb/deploy/deploy_to_docker
 
 EXPOSE 80 8080

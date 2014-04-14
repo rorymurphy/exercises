@@ -13,7 +13,7 @@ apt-get -y install gcc python-dev python-pip python-virtualenv nginx uwsgi curl 
 
 #setup a virtualenv, activate it, and install all the pip plugins we'll need
 virtualenv $DIR/../app/retailmenot/ENV
-souce $DIR/../app/retailmenot/ENV/bin/activate
+source $DIR/../app/retailmenot/ENV/bin/activate
 pip install -r $DIR/../app/retailmenot/requirements.txt
 
 #elasticsearch setup

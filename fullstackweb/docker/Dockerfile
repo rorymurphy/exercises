@@ -7,4 +7,5 @@ RUN apt-get -y install wget
 RUN mkdir /deploy
 RUN cd /deploy && git clone https://github.com/rorymurphy/exercises.git
 RUN /deploy/exercises/fullstackweb/deploy/deploy_to_server
+CMD ["/deploy/exercises/fullstackweb/deploy/startup"]
 EXPOSE 80 8080

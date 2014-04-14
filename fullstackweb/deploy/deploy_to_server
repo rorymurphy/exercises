@@ -9,7 +9,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 apt-get update
 #make sure to update openssl to mitigate heartbeat vulnerability
 apt-get -y upgrade openssl
-apt-get -y install gcc python-dev python-pip python-virtualenv python-software-properties software-properties-common nginx uwsgi curl nodejs npm
+apt-get -y install gcc python-dev python-pip python-virtualenv python-software-properties software-properties-common nginx uwsgi curl nodejs npm supervisor
+
+#make sure nginx starts on boot
+update-rc.d nginx defaults
 
 #setup a virtualenv, activate it, and install all the pip plugins we'll need
 virtualenv $DIR/../app/retailmenot/ENV
@@ -48,10 +51,12 @@ mkdir /web/logs
 mkdir /web/conf
 
 #create symlinks to all the various config files that need deployed
+ln -s $DIR/../app/retailmenot /web/www/retailmenot
 ls /etc/nginx/sites-enabled || mkdir -p /etc/nginx/sites-enabled
 ln -s $DIR/../conf/nginx/uwsgi_retailmenot /etc/nginx/sites-enabled/uwsgi_retailmenot
 ls /etc/supervisor/conf.d || mkdir -p /etc/supervisor/conf.d
 ln -s $DIR/../conf/supervisor/uwsgi.conf /etc/supervisor/conf.d/uwsgi.conf
+ln -s $DIR/../conf/supervisor/statsd_carbon.conf /etc/supervisor/conf.d/statsd_carbon.conf
 ln -s $DIR/../conf/uwsgi/uwsgi.conf /web/conf/uwsgi.conf
 
 

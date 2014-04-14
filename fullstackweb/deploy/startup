@@ -1,0 +1,4 @@
+ls /etc/nginx/sites-enabled && sudo rm /etc/nginx/sites-enabled/default.conf
+sudo service supervisor start
+sudo service elasticsearch start
+sudo service nginx start

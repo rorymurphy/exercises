@@ -4,6 +4,3 @@ ls /etc/nginx/sites-enabled/default && sudo rm /etc/nginx/sites-enabled/default
 sudo service elasticsearch start
 sudo service supervisor start
 sudo service nginx start
-#supervisor did not start all the services as expected, but seemed to after issuing a restart
-#need to look into this
-sudo service supervisor restart

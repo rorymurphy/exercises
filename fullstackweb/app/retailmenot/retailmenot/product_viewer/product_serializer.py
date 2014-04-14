@@ -1,6 +1,9 @@
 from django.forms import widgets
+
+from rest_framework import pagination
 from rest_framework import serializers
 from product_viewer.models import Product
+
 
 class ProductSerializer(serializers.Serializer):
     id = serializers.CharField(max_length = 255, required = True)
@@ -42,3 +45,10 @@ class ProductSerializer(serializers.Serializer):
 
         # Create new instance
         return Product(**attrs)
+
+class PaginatedProductSerializer(pagination.PaginationSerializer):
+    """
+    Serializes page objects of user querysets.
+    """
+    class Meta:
+        object_serializer_class = ProductSerializer

@@ -5813,3 +5813,23 @@ button.close {
 .grid-products .product-item .image-wrapper img {
   max-height: 100%;
 }
+.pagination {
+  display: block;
+  margin: 0;
+  text-align: center;
+}
+.pagination .pagination-inner {
+  display: inline;
+}
+.pagination .pagination-inner .pager {
+  display: inline-block;
+  margin: 0 5px;
+  padding: 7px;
+  border: #555555;
+  border-radius: 3px;
+  background-color: #eeeeee;
+  font-weight: bold;
+}
+.pagination .pagination-inner .pager.active {
+  background-color: #4c2f51;
+}

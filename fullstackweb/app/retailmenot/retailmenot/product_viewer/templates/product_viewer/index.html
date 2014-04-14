@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-
+{% load staticfiles %}
 {% block navbar %}
 <div class="collapse navbar-collapse">
   <form class="navbar-form navbar-right" role="search">
     <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search">
+      <input type="text" name="search" class="form-control" placeholder="Search">
       <span class="input-group-btn">
       	<button type="submit" class="btn btn-search"><i class="glyphicon glyphicon-search"></i></button>
       </span>
@@ -13,26 +13,79 @@
 </div>
 {% endblock %}
 {% block content_main %}
-	{% if products %}
-		<div class="container-fluid grid-products">
-		{% for prod in products %}
-			{% if forloop.counter0|divisibleby:"4" %}
-			<div class="row">
-			{% endif %}
+
+{% endblock %}
+
+{% block scripts_footer %}
+	{% verbatim %}
+	<script type="text/template-xintricity" id="template-products" data-xt-template="xintricity">
+		<div class="container-fluid grid-products" data-xt-foreach="{{viewmodel.rows}}" data-xt-iterator="row" data-xt-index="rIdx">
+			<div class="row" data-xt-foreach="{{Path='row', Filter='viewmodel.getItems'}}" data-xt-iterator="prod">
 				<div class="col-md-3 col-sm-6 col-xs-12 product-item">
 					<div class="image-wrapper">
-						<img src="{{ prod.image_urls }}" />
+						<img data-xt-src="{{prod.image_urls}}" />
 					</div>
-					<div class="caption">{{ prod.product_title }}</a></div>
-				</div>
-			{% if forloop.counter|divisibleby:"4" %}
+					<div class="caption">{{prod.product_title}} {{prod.price}}</div>
+				</div>			
 			</div>
-			{% endif %}
-		{% empty %}	
-		
-		{% endfor %}
 		</div>
-	{% else %}
-		<p>No products are available</p>
-	{% endif %}
+		<div class="container-fluid">
+			<div class="row">
+				<div class="pagination">
+					<div class="pagination-inner">
+						<div class="pager" data-xt-if="{{Path='viewmodel.page', Filter='viewmodel.notFirst'}}">
+							<a href="/page/{{Path='viewmodel.page', Filter='Filter.subtract1'}}">&lsaquo;</a>
+						</div>
+					    <span data-xt-foreach="{{Path='viewmodel.pages', Filter='viewmodel.getPagesForPaging'}}" data-xt-iterator="page">
+						    <div class="pager"><a href="/page/{{page.index}}">{{page.index}}</a></div>
+					    </span>
+						<div class="pager" data-xt-if="{{Path='viewmodel.page', Filter='viewmodel.notLast'}}">
+							<a href="/page/{{Path='viewmodel.page', Filter='Filter.add1'}}">&rsaquo;</a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</script>
+	{% endverbatim %}
+	<script type="text/javascript" src="{% static 'product_viewer/scripts/require.js' %}"></script>
+	<script type="text/javascript">
+	    requirejs.config({
+	        "baseUrl": "/",
+	        "waitSeconds": "15",
+	        "paths": {
+	        	"jquery": '{% static "product_viewer/scripts/jquery-1.11.0.min" %}',
+	        	"jquery-migrate": '{% static "product_viewer/scripts/jquery-migrate-1.2.1.min" %}',
+	        	"promise": '{% static "product_viewer/scripts/promise-0.1.1.min" %}',
+	        	"underscore": '{% static "product_viewer/scripts/underscore-min" %}',
+	        	"bootstrap": '{% static "product_viewer/scripts/bootstrap.min" %}',
+	        	"xintricity": '{% static "product_viewer/scripts/xintricity" %}',
+	        	"product-viewer": '{% static "product_viewer/scripts/product-viewer" %}'
+	        },
+	        "shim": {
+	        	"jquery-migrate":{"deps":["jquery"]},
+	        	"bootstrap":{"deps":["jquery-migrate"]},
+	        	"promise": {"deps":[]}
+	        },
+	        "bundles": {"xintricity":["xutil","xmvvm","xtemplate"]}
+	    });
+	</script>
+	<script type="text/javascript">
+		define('product-viewer-init', [], function(){
+			return {
+				listUrl: '/product/',
+				page: {{page}}
+			};
+		});
+		
+		require(['jquery', 'underscore', 'xutil', 'xmvvm', 'product-viewer', 'product-viewer-init', 'bootstrap', 'promise'], function($, _, $x, xmvvm, pv, init){
+			var pv = new pv.ProductViewer();
+			pv.page(init.page);
+			pv.loadItems().then(function(){
+				$('.content-main').empty().append(pv.render());
+			});
+		});
+	</script>
+
 {% endblock %}

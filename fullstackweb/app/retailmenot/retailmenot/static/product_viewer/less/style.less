@@ -30,3 +30,24 @@
 		}
 	}
 }
+
+.pagination{
+		display: block;
+		margin: 0;
+		text-align: center;
+		.pagination-inner{
+			display: inline;
+			.pager{
+				display: inline-block;
+				margin: 0 5px;
+				padding: 7px;
+				border: @gray;
+				border-radius: 3px;
+				background-color: @gray-lighter;
+				font-weight: bold;
+				&.active{
+					background-color: @brand-primary;
+				}
+			}
+		}
+}

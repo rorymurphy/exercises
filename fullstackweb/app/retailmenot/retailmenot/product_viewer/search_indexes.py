@@ -4,10 +4,19 @@ from product_viewer.models import Product, Image
 
 class ProductIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    title = indexes.CharField(model_attr='product_title')
-    url = indexes.CharField(model_attr='product_url')
+    
+    id = indexes.CharField(model_attr='id')
+    product_title = indexes.CharField(model_attr='product_title')
+    product_url = indexes.CharField(model_attr='product_url')
     last_mod = indexes.DateTimeField(model_attr='last_mod')
     
+    parent_page_url = indexes.CharField(model_attr='parent_page_url')
+    merchant_domain = indexes.CharField(model_attr='merchant_domain')
+    price = indexes.CharField(model_attr='price')
+    image_urls = indexes.CharField(model_attr='image_urls')
+    page_title = indexes.CharField(model_attr='page_title')
+
+  
     def get_model(self):
         return Product
     

@@ -37,6 +37,6 @@ class Image(models.Model):
     path = models.CharField(max_length = 1024)
     checksum = models.CharField(max_length = 255)
     
-    products = models.ManyToManyField(Product, related_name = "images")
+    product = models.ForeignKey(Product, related_name = "images")
     
         

@@ -22,7 +22,7 @@ cd /tmp
 wget --no-check-certificate https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.1.0.deb
 sudo dpkg -i elasticsearch-1.1.0.deb
 rm elasticsearch-1.1.0.deb
-rm /etc/elasticsearch/conf/elasticsearch.yml
+ls /etc/elasticsearch/conf/elasticsearch.yml && rm /etc/elasticsearch/conf/elasticsearch.yml
 ln -s $DIR/../conf/elasticsearch.yml /etc/elasticsearch/conf/elasticsearch.yml
 
 sudo update-rc.d elasticsearch defaults 95 10

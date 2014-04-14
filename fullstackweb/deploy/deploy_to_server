@@ -41,7 +41,7 @@ npm cache clean -f
 npm install -g n
 n stable
 
-$DIR/install_statd
+$DIR/install_statsd
 
 mkdir -p /web/www
 mkdir /web/logs

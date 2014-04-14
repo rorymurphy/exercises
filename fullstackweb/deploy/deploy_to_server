@@ -48,7 +48,9 @@ mkdir /web/logs
 mkdir /web/conf
 
 #create symlinks to all the various config files that need deployed
+ls /etc/nginx/sites-enabled || mkdir -p /etc/nginx/sites-enabled
 ln -s $DIR/../conf/nginx/uwsgi_retailmenot /etc/nginx/sites-enabled/uwsgi_retailmenot
+ls /etc/supervisor/conf.d || mkdir -p /etc/supervisor/conf.d
 ln -s $DIR/../conf/supervisor/uwsgi.conf /etc/supervisor/conf.d/uwsgi.conf
 ln -s $DIR/../conf/uwsgi/uwsgi.conf /web/conf/uwsgi.conf
 

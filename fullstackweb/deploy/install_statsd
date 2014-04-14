@@ -84,7 +84,11 @@ graphitePort: 2003
 , port: 8125
 }
 EOF
- 
+
+#end the virtualenv session
+deactivate
+
+#cleanup
 cp /tmp/localConfig.js /opt/statsd/localConfig.js
 rm /tmp/graphite_reqs.txt
 rm /tmp/localConfig.js

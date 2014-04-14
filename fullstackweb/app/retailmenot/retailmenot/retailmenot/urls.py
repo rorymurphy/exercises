@@ -22,5 +22,5 @@ urlpatterns = patterns('',
     url(r'^$', 'product_viewer.views.index', name='index'),
     url(r'^product/$', views.ProductList.as_view()),
     url(r'^admin/', include(admin.site.urls)),
-    #url(r'^search/', include('haystack.urls')),
+    url(r'^search/', include('haystack.urls')),
 )

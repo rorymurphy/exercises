@@ -1,0 +1,4 @@
+{{ object.product_title }}
+{{ object.page_title }}
+{{ object.prodct_url }}
+{{ object.price }}

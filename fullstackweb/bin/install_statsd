@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#exit on first error
+set -e
 #tweaking a script from
 #http://www.kinvey.com/blog/89/how-to-set-up-metric-collection-using-graphite-and-statsd-on-ubuntu-1204-lts
 #these instruction were for a previous version of statsd and graphite
@@ -39,8 +41,7 @@ pip install -r /tmp/graphite_reqs.txt
 #
 # Configure carbon
 #
-cd /opt/graphite/conf/
-cp carbon.conf.example carbon.conf
+cp /opt/graphite/conf/carbon.conf.example /opt/graphite/conf/carbon.conf
  
 # Create storage schema and copy it over
 # Using the sample as provided in the statsd README
@@ -59,7 +60,7 @@ pattern = ^stats\..*
 retentions = 10s:6h,1m:7d,10m:1y
 EOF
  
-cp /tmp/storage-schemas.conf storage-schemas.conf
+cp /tmp/storage-schemas.conf /opt/graphite/conf/storage-schemas.conf
  
 # Make sure log dir exists for webapp
 mkdir -p /opt/graphite/storage/log/webapp

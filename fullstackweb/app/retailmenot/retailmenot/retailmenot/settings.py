@@ -60,6 +60,8 @@ WSGI_APPLICATION = 'retailmenot.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
+#We're currently using SQLite as the back-end, but this could
+#easily shift to MySQL in a production environment
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -97,7 +99,9 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-#Statsd configuration
+#Statsd configuration - set the client to use the actual pystats
+#backend, and add the middleware classes to automatically send
+#stats
 STATSD_CLIENT = 'django_statsd.clients.normal'
 MIDDLEWARE_CLASSES = (
         'django_statsd.middleware.GraphiteRequestTimingMiddleware',

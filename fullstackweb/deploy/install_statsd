@@ -22,7 +22,10 @@ apt-get -y install python-software-properties memcached python-dev python-pip sq
 libcairo2-dev python-cairo pkg-config
 
 mkdir -p /usr/local/lib
-virtualenv /usr/local/lib/graphite
+#using the --system-site-packages flag because pycairo doesn't play nice
+#with virtualenv, so I have to inherit it from the system library
+#installed using apt-get
+virtualenv --system-site-packages /usr/local/lib/graphite
 source /usr/local/lib/graphite/bin/activate
 
 # Install carbon and graphite deps
@@ -35,7 +38,7 @@ whisper==0.9.10
 carbon==0.9.10
 graphite-web==0.9.10
 EOF
- 
+
 pip install -r /tmp/graphite_reqs.txt
  
 #
@@ -85,3 +88,4 @@ EOF
 cp /tmp/localConfig.js /opt/statsd/localConfig.js
 rm /tmp/graphite_reqs.txt
 rm /tmp/localConfig.js
+rm /tmp/storage-schemas.conf

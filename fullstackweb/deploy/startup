@@ -3,13 +3,15 @@
 ls /etc/nginx/sites-enabled/default && sudo rm /etc/nginx/sites-enabled/default
 sudo service elasticsearch start
 sudo service nginx start
-#sudo service supervisor start
-#instead of running supervisor as a service, I've seen some suggestions to let it be the running process
-#that keeps docker running
-/usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
 
+#needs to be before the supervisord command, since that blocks
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 #seeding elasticsearch - have to do it at while elasticsearch is running
 source $DIR/../app/retailmenot/ENV/bin/activate
 python $DIR/../app/retailmenot/retailmenot/manage.py rebuild_index --noinput
 deactivate
+
+#sudo service supervisor start
+#instead of running supervisor as a service, I've seen some suggestions to let it be the running process
+#that keeps docker running
+/usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf

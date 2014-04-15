@@ -6,7 +6,8 @@ sudo service nginx start
 
 #needs to be before the supervisord command, since that blocks
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-#seeding elasticsearch - have to do it at while elasticsearch is running
+#seeding elasticsearch - have to do it at while elasticsearch is running, sometimes it takes a few secondsto be ready, so give it 10 seconds to start
+sleep 10s
 source $DIR/../app/retailmenot/ENV/bin/activate
 python $DIR/../app/retailmenot/retailmenot/manage.py rebuild_index --noinput
 deactivate

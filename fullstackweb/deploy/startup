@@ -7,3 +7,8 @@ sudo service nginx start
 #instead of running supervisor as a service, I've seen some suggestions to let it be the running process
 #that keeps docker running
 /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
+
+#seeding elasticsearch - have to do it at while elasticsearch is running
+source $DIR/../app/retailmenot/ENV/bin/activate
+python $DIR/../app/retailmenot/retailmenot/manage.py rebuild_index --noinput
+deactivate

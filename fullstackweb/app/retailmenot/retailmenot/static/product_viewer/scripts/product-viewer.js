@@ -57,10 +57,19 @@ define('product-viewer', ['jquery', 'underscore', 'xutil', 'xmvvm', 'product-vie
 			var t=this;
 			t.rows( new mvvm.Collection() );
 			t.pages( new mvvm.Collection() );
-			_.bindAll(t, 'updateRows', 'search', 'loadItems', 'bindModel', 'getItems', 'getPagesForPaging', 'notFirst', 'notLast', 'isCurrentPage');
+			_.bindAll(t, 'totalPages', 'updateRows', 'search', 'loadItems', 'bindModel', 'getItems', 'getPagesForPaging', 'notFirst', 'notLast', 'isCurrentPage');
 			t.on('change:model', t.bindModel);
 			t.on('change:model', t.updateRows);
-			$('form[role="search"]').on('submit', t.search);
+			t.on('change:query', function(){
+				//make sure we trigger updates for page changes
+				t.page(0);
+				t.page(1);
+			});
+			$('form[role="search"]').on('keyup', t.search);
+		},
+		totalPages: function(){
+			var t = this;
+			return Math.ceil((t.model().count() - 1) / 20 + 1);
 		},
 		bindModel: function(){
 			
@@ -76,8 +85,8 @@ define('product-viewer', ['jquery', 'underscore', 'xutil', 'xmvvm', 'product-vie
 				}) );
 			}
 			
-			var totalPages = (t.model().count() - 1) / 20 + 1;
-			while(totalPages > t.pages().length){
+			
+			while(t.totalPages() > t.pages().length){
 				t.pages().add( new mvvm.Model({
 					index: t.pages().length + 1
 				}) );
@@ -89,70 +98,51 @@ define('product-viewer', ['jquery', 'underscore', 'xutil', 'xmvvm', 'product-vie
 		},
 		getPagesForPaging: function(){
 			var t=this;
-			var totalPages = (t.model().count() - 1) / 20 + 1;
-			totalPages = Math.ceil(totalPages);
+			
+			
 			var start = Math.max(1, t.page() - 3);
-			var end = Math.min(totalPages, t.page() + 3);
+			var end = Math.min(t.totalPages(), t.page() + 3);
 			return t.pages().filter(function(val){
 				return val.get('index') >= start && val.get('index') < end;
 			});
 		},
 		search: function(evt, ui){
 			var t=this;
-			evt.preventDefault();
+			//evt.preventDefault();
 			
 			var q = $('form[role="search"] input[name="search"]').val();
 			if(q !== t.query()){
 				t.page(1);
 				t.query(q);
 				t.loadItems();
+				window.product_router.navigate('/page/1/', {trigger: false});
 			}
 			
-			return false;
+			
+			
+			//return false;
 		},
 		
 		loadItems: function(){
 			var t=this;
-			var url = init.listUrl;
-			var params = [];
-
-			if(t.query() !== null && t.query() !== ''){
-				params.push('q=' + t.query());
-				t.page(1);
-				//Trigger page change if query changes, since it's a different page
-				t.trigger('change:page');
-			}
-			if(t.page() !== 1){
-				params.push('page=' + t.page());
-			}
-			for(var i=0; i<params.length; i++){
-				if(i===0){
-					url += '?';
-				}else{
-					url += '&';
-				}
-				url += params[i];
-			}
-			return new Promise(function(resolve, reject){
-				$.ajax({
-					type: 'GET',
-					dataType: 'json',
-					url: url				
-				}).success(function(data){
+			return new Promise( function(resolve, reject){
+							
+				retrieveListData(t.query(), t.page()).then(function(data){
 					var model = t.model();
 					if(model === null || model === undefined){
 						t.model( new exports.ProductQueryResults(data, {parse: true}) );
 					}else{
 						var result = new exports.ProductQueryResults(data, {parse: true});
 						t.rows().reset([]);
+						t.pages().reset([]);
 						t.model().results(result.results());
 						t.model().count(result.count());
 						
 						t.updateRows();
 					}
-					resolve();
-				}).error(function(){
-					reject();
+					resolve();				
+				}, function(err){
+					reject(err);
 				});
 			});
 		},
@@ -162,8 +152,7 @@ define('product-viewer', ['jquery', 'underscore', 'xutil', 'xmvvm', 'product-vie
 		},
 		notLast: function(val){
 			var t=this;
-			var totalPages = (t.model().count() - 1) / 20 + 1;
-			return val < totalPages;
+			return val < t.totalPages();
 		},
 		isCurrentPage: function(val){
 			return val == this.page();
@@ -171,8 +160,37 @@ define('product-viewer', ['jquery', 'underscore', 'xutil', 'xmvvm', 'product-vie
 		
 	});
 	
-	exports.ProductRouter = mvvm.Router.extend({
-		
+	var retrieveListData = function(query, page){
+		var params = [], url = init.listUrl;
+		if(query !== undefined && query !== null && query !== ''){
+			params.push('q=' + query);
+		}
+		if(page !== 1){
+			params.push('page=' + page);
+		}
+		for(var i=0; i<params.length; i++){
+			if(i===0){
+				url += '?';
+			}else{
+				url += '&';
+			}
+			url += params[i];
+		}
+		return new Promise(function(resolve, reject){
+			$.ajax({
+				type: 'GET',
+				dataType: 'json',
+				url: url				
+			}).success(function(data){
+				resolve(data);
+			}).error(function(){
+				reject();
+			});
+		});
+	};
+	
+	retrieveListData = _.memoize(retrieveListData, function(query, page){
+		return (query || '').toString() + '::' + page.toString();
 	});
 	
 	return exports;

@@ -33,15 +33,11 @@
 			<div class="row">
 				<div class="pagination">
 					<div class="pagination-inner">
-						<div class="pager" data-xt-if="{{Path='viewmodel.page', Filter='viewmodel.notFirst'}}">
-							<a href="/page/{{Path='viewmodel.page', Filter='Filter.subtract1'}}">&lsaquo;</a>
-						</div>
+						<a class="pager" data-xt-if="{{Path='viewmodel.page', Filter='viewmodel.notFirst'}}" href="/page/{{Path='viewmodel.page', Filter='Filter.subtract1'}}/">&lsaquo;</a>
 					    <span data-xt-foreach="{{Path='viewmodel.pages', Filter='viewmodel.getPagesForPaging'}}" data-xt-iterator="page">
-						    <div class="pager" data-xt-class-active="{{Path='page.index', Filter='viewmodel.isCurrentPage'}}"><a href="/page/{{page.index}}">{{page.index}}</a></div>
+							<a class="pager" data-xt-class-active="{{Path='page.index', Filter='viewmodel.isCurrentPage'}}" href="/page/{{page.index}}/">{{page.index}}</a>
 					    </span>
-						<div class="pager" data-xt-if="{{Path='viewmodel.page', Filter='viewmodel.notLast'}}">
-							<a href="/page/{{Path='viewmodel.page', Filter='Filter.add1'}}">&rsaquo;</a>
-						</div>
+						<a class="pager" data-xt-if="{{Path='viewmodel.page', Filter='viewmodel.notLast'}}" href="/page/{{Path='viewmodel.page', Filter='Filter.add1'}}/">&rsaquo;</a>
 					</div>
 				</div>
 
@@ -79,12 +75,35 @@
 			};
 		});
 		
-		require(['jquery', 'underscore', 'xutil', 'xmvvm', 'product-viewer', 'product-viewer-init', 'bootstrap', 'promise'], function($, _, $x, xmvvm, pv, init){
+		require(['jquery', 'underscore', 'xutil', 'xmvvm', 'product-viewer', 'product-viewer-init', 'bootstrap', 'promise'], function($, _, $x, mvvm, pv, init){
 			var pv = new pv.ProductViewer();
 			pv.page(init.page);
 			pv.loadItems().then(function(){
 				$('.content-main').empty().append(pv.render());
 			});
+			
+			var ProductRouter = mvvm.Router.extend({
+				routes: {
+					"": "homePage",
+					"page/:page/": "productPage",
+					"search/:query/:page/": "searchPage"
+				},
+				
+				homePage: function(){
+					pv.query('');
+					pv.page(1);
+					pv.loadItems();
+				},
+				productPage: function(page){
+					pv.page(page);
+					pv.loadItems();
+				},
+				searchPage: function(query, page){
+					
+				}
+			});
+			
+			window.product_router = new ProductRouter();
 		});
 	</script>
 

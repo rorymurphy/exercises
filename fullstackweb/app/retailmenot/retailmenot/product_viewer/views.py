@@ -37,7 +37,7 @@ class ProductList(generics.ListAPIView):
         """
         for the purposes of listing, we're going to override the
         default get_queryset method to check if a 'q' query string
-        parameter has been submitted and, if so, use elasticsearch
+        parameter has been submitted and use elasticsearch
         to get the results
         """
         queryset = None 
@@ -47,6 +47,6 @@ class ProductList(generics.ListAPIView):
         if query == None:
             queryset = queryset.order_by('price')
         else:    
-            queryset = queryset.filter(content = Clean(query) )
+            queryset = queryset.filter(content = Clean(query).order_by('price') )
 
         return queryset

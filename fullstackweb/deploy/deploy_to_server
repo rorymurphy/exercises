@@ -59,6 +59,9 @@ ln -s $DIR/../conf/supervisor/uwsgi.conf /etc/supervisor/conf.d/uwsgi.conf
 ln -s $DIR/../conf/supervisor/statsd_carbon.conf /etc/supervisor/conf.d/statsd_carbon.conf
 ln -s $DIR/../conf/uwsgi/uwsgi.ini /web/conf/retailmenot/uwsgi.ini
 
+cd $DIR/../ingest && npm install
+node data-ingest.js $DIR/../app/retailmenot/retailmenot/db.sqlite3 $DIR/../products.json
+
 #seeding elasticsearch
 source $DIR/../app/retailmenot/ENV/bin/activate
 python $DIR/../app/retailmenot/retailmenot/manage.py rebuild_index --noinput

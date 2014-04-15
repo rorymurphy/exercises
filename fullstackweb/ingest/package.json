@@ -1,0 +1,8 @@
+{
+  "name": "rmn-data-ingest",
+  "version": "1.0.0",
+  "dependencies": {
+    "sqlite3": "2.2.1",
+    "underscore": "1.6.0"
+  }
+}

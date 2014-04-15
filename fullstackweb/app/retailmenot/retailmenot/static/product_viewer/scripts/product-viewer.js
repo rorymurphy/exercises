@@ -57,7 +57,7 @@ define('product-viewer', ['jquery', 'underscore', 'xutil', 'xmvvm', 'product-vie
 			var t=this;
 			t.rows( new mvvm.Collection() );
 			t.pages( new mvvm.Collection() );
-			_.bindAll(t, 'updateRows', 'search', 'loadItems', 'bindModel', 'getItems', 'getPagesForPaging', 'notFirst', 'notLast');
+			_.bindAll(t, 'updateRows', 'search', 'loadItems', 'bindModel', 'getItems', 'getPagesForPaging', 'notFirst', 'notLast', 'isCurrentPage');
 			t.on('change:model', t.bindModel);
 			t.on('change:model', t.updateRows);
 			$('form[role="search"]').on('submit', t.search);
@@ -164,6 +164,9 @@ define('product-viewer', ['jquery', 'underscore', 'xutil', 'xmvvm', 'product-vie
 			var t=this;
 			var totalPages = (t.model().count() - 1) / 20 + 1;
 			return val < totalPages;
+		},
+		isCurrentPage: function(val){
+			return val == this.page();
 		}
 		
 	});

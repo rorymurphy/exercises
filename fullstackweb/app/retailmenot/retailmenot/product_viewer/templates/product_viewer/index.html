@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block navbar %}
-<div class="collapse navbar-collapse">
-  <form class="navbar-form navbar-right" role="search">
-    <div class="input-group">
-      <input type="text" name="search" class="form-control" placeholder="Search">
-      <span class="input-group-btn">
-      	<button type="submit" class="btn btn-search"><i class="glyphicon glyphicon-search"></i></button>
-      </span>
-    </div>
-  </form>
-</div>
+
+<form class="navbar-form navbar-right" role="search">
+  <div class="input-group">
+    <input type="text" name="search" class="form-control" placeholder="Search">
+    <span class="input-group-btn">
+    	<button type="submit" class="btn btn-search"><i class="glyphicon glyphicon-search"></i></button>
+    </span>
+  </div>
+</form>
+
 {% endblock %}
 {% block content_main %}
 
@@ -37,7 +37,7 @@
 							<a href="/page/{{Path='viewmodel.page', Filter='Filter.subtract1'}}">&lsaquo;</a>
 						</div>
 					    <span data-xt-foreach="{{Path='viewmodel.pages', Filter='viewmodel.getPagesForPaging'}}" data-xt-iterator="page">
-						    <div class="pager"><a href="/page/{{page.index}}">{{page.index}}</a></div>
+						    <div class="pager" data-xt-class-active="{{Path='page.index', Filter='viewmodel.isCurrentPage'}}"><a href="/page/{{page.index}}">{{page.index}}</a></div>
 					    </span>
 						<div class="pager" data-xt-if="{{Path='viewmodel.page', Filter='viewmodel.notLast'}}">
 							<a href="/page/{{Path='viewmodel.page', Filter='Filter.add1'}}">&rsaquo;</a>

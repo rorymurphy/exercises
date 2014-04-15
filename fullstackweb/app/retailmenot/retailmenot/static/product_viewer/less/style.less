@@ -13,7 +13,9 @@
 }
 
 .grid-products{
+	background-color: @body-bg;
 	.product-item{
+
 		text-align: center;
 		box-shadow: 5px 5px 5px @gray-dark;
 		margin-bottom: 10px;
@@ -45,9 +47,25 @@
 				border-radius: 3px;
 				background-color: @gray-lighter;
 				font-weight: bold;
+				
+				a:visited, a:active, a:hover{
+					text-decoration: none;
+				}
+				
+				&:hover{
+					background-color: @red;
+					a, a:visited, a:active, a:hover{
+						color: white;
+					}
+				}
 				&.active{
 					background-color: @brand-primary;
+					color: white;
+					a, a:visited, a:active, a:hover{
+						color: white;
+					}
 				}
+
 			}
 		}
 }

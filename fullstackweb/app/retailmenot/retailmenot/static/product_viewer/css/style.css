@@ -5772,6 +5772,9 @@ button.close {
     display: none !important;
   }
 }
+body {
+  background-image: url('../img/rmn.png');
+}
 .navbar {
   border-radius: 0;
 }
@@ -5798,6 +5801,9 @@ button.close {
   width: 100%;
   max-width: 1200px;
   margin: auto;
+}
+.grid-products {
+  background-color: #ffffff;
 }
 .grid-products .product-item {
   text-align: center;
@@ -5830,6 +5836,27 @@ button.close {
   background-color: #eeeeee;
   font-weight: bold;
 }
+.pagination .pagination-inner .pager a:visited,
+.pagination .pagination-inner .pager a:active,
+.pagination .pagination-inner .pager a:hover {
+  text-decoration: none;
+}
+.pagination .pagination-inner .pager:hover {
+  background-color: #b03233;
+}
+.pagination .pagination-inner .pager:hover a,
+.pagination .pagination-inner .pager:hover a:visited,
+.pagination .pagination-inner .pager:hover a:active,
+.pagination .pagination-inner .pager:hover a:hover {
+  color: white;
+}
 .pagination .pagination-inner .pager.active {
   background-color: #4c2f51;
+  color: white;
+}
+.pagination .pagination-inner .pager.active a,
+.pagination .pagination-inner .pager.active a:visited,
+.pagination .pagination-inner .pager.active a:active,
+.pagination .pagination-inner .pager.active a:hover {
+  color: white;
 }

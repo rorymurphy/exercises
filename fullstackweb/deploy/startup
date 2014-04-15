@@ -8,6 +8,7 @@ sudo service nginx start
 #that keeps docker running
 /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 #seeding elasticsearch - have to do it at while elasticsearch is running
 source $DIR/../app/retailmenot/ENV/bin/activate
 python $DIR/../app/retailmenot/retailmenot/manage.py rebuild_index --noinput

@@ -47,6 +47,6 @@ class ProductList(generics.ListAPIView):
         if query == None:
             queryset = queryset.order_by('price')
         else:    
-            queryset = queryset.filter(content = Clean(query).order_by('price') )
+            queryset = queryset.filter(content = Clean(query)).order_by('price')
 
         return queryset

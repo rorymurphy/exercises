@@ -29,14 +29,18 @@ class ProductListHandler(tornado.web.RequestHandler):
 	self.write(json.dumps(result))
         
     def post(self):
-        self.write('Not Implemented')
+        data = json.loads(self.request.body)
+        model = Product(data)
+        session = Session()
+        session.add(model)
+        session.commit()
       
 
 class ProductDetailsHandler(tornado.web.RequestHandler):
     def get(self, prod_id):
         #self.write(prod_id)
         session = Session()
-	model = session.query(Product).filter_by(id = prod_id).one()
+	model = session.query(Product).filter_by(id = prod_id).first()
 	if model == None:
 	    raise tornado.web.HTTPError(404)
 	self.set_header('Content-Type', 'application/json')
@@ -46,11 +50,7 @@ class ProductDetailsHandler(tornado.web.RequestHandler):
         self.write('Not Implemented')
 
 def start_app():
-    parse_command_line()
 
-    engine = create_engine('sqlite:///app/retailmenot/retailmenot/db.sqlite3')
-    Session.configure(bind=engine)
-    Base.metadata.bind = engine    
     
     app = tornado.web.Application([
             (r"/product/", ProductListHandler),
@@ -60,5 +60,11 @@ def start_app():
 
     
 if __name__ == "__main__":
+    parse_command_line()
+
+    engine = create_engine('sqlite:///app/retailmenot/retailmenot/db.sqlite3')
+    Session.configure(bind=engine)
+    Base.metadata.bind = engine      
+  
     start_app()
     tornado.ioloop.IOLoop.instance().start()

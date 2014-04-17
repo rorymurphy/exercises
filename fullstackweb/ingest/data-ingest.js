@@ -31,6 +31,14 @@ function loadData(data){
     return;
   }
 
+  var clearImages = db.prepare("DELETE FROM product_viewer_image WHERE 1=1");
+  var clearProd = db.prepare("DELETE FROM product_viewer_product WHERE 1=1");
+  
+  clearImages.run();
+  clearImages.finalize();
+  clearProd.run();
+  clearProd.finalize();
+
   var insertProd = db.prepare("INSERT INTO product_viewer_product(id, parent_page_url, merchant_domain, price, image_urls, product_url, last_mod, visit_id, visit_status, page_title, product_title) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
 
   var insertImage = db.prepare("INSERT INTO product_viewer_image(product_id, url, path, checksum) VALUES(?,?,?,?)");
@@ -55,5 +63,6 @@ function loadData(data){
   });
   
   insertProd.finalize();
+  insertImage.finalize();
 
 }

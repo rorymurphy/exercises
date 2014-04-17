@@ -160,9 +160,14 @@ define('product-viewer', ['jquery', 'underscore', 'xutil', 'xmvvm', 'product-vie
 		
 	});
 	
+	//This method was created separately specifically so that it could be
+	//easily memoized to reduce network calls.
 	var retrieveListData = function(query, page){
 		var params = [], url = init.listUrl;
-		if(query !== undefined && query !== null && query !== ''){
+		query = query || '';
+		//Elasticsearch can't return any useful results for a single letter
+		//so require at least 2.
+		if(query !== '' && query.length > 1){
 			params.push('q=' + query);
 		}
 		if(page !== 1){

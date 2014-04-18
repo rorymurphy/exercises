@@ -13,7 +13,28 @@
 
 {% endblock %}
 {% block content_main %}
+	{% if products %}
+		<div class="container-fluid grid-products">
+		{% for prod in products %}
+			{% if forloop.counter0|divisibleby:"4" %}
+			<div class="row">
+			{% endif %}
+				<div class="col-md-3 col-sm-6 col-xs-12 product-item">
+					<div class="image-wrapper">
+						<img src="{{ prod.image_urls }}" />
+					</div>
+					<div class="caption">{{ prod.product_title }} {{prod.price}}</div>
+				</div>
+			{% if forloop.counter|divisibleby:"4" %}
+			</div>
+			{% endif %}
+		{% empty %}	
 
+		{% endfor %}
+		</div>
+	{% else %}
+		<p>No products are available</p>
+	{% endif %}
 {% endblock %}
 
 {% block scripts_footer %}

@@ -67,7 +67,9 @@ Assumptions
 * Based on the requirements, the solution needs to be Python based.  Python is not a language I have experience with, so that portion of the solution is likely sub-optimal.  However, the overall architecture and front-end should be solid.
 * Building in Docker as per instructions, but this would not be recommended for a production application at this time due to the way Docker has to run with admin privileges leaving open the possibility that, if a vulnerability is found in Docker that allows code to break out of the sandbox, it would be executing as root on the host system.
 * Installing all components in a single Docker container, although this is unlikely in practice.
-* Designing web pages to be primarily server-side rendered, since that has advantages for SEO and this is a product page example.  Could easily use a javascript MVC/MVVM framework to render the pages, but search engines do not always parse the dynamically rendered content correctly.
+* Pages are designed to statically render the page for the initial load, but to use a search API to grab all updates.  This is done to optimize for SEO, since search engines sometimes struggle to index dynamically loaded content, while simultaneously delivering the client a seamless experience free of page reloads.  The search API can be accessed at /product/?q=<your query>.  Additionally, as requested, there is a RESTful API that implements basic List and Details actions.  This API is exposed on a separate port, 8888, using the /product/ and /product/<id>/ semantics.
+* Currently, items are sorted based on their price, but this is arbitrary.
+* The client-side portion of the application is built using a framework I developed and have open sourced, Xintricity.js.  The framework is built on top of Backbone and jQuery
 * I am not a designer
 
 Software

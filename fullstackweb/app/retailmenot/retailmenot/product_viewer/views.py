@@ -23,7 +23,11 @@ from product_viewer.product_serializer import ProductSerializer,\
 PAGE_SIZE = 20
 
 def index(request, page=1):
-    context = {'page': page }
+    page = int(page)
+    start_idx = (page -1) * PAGE_SIZE
+    end_idx = page * PAGE_SIZE
+    products = SearchQuerySet().order_by('price')[start_idx:end_idx]
+    context = {'page': page, 'products': products }
     return render(request, 'product_viewer/index.html', context)
 
 
